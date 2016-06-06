@@ -4,12 +4,13 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
-	shioutil "github.com/voidint/swagger-hub/ioutil"
 	shiosutil "github.com/voidint/swagger-hub/osutil"
 )
 
@@ -98,12 +99,22 @@ func genIndexHTML(opts Options, logger *log.Logger) (err error) {
 	indexHTML := filepath.Join(opts.Dir, "index.html")
 	indexTPL := filepath.Join(opts.Dir, "index.tpl")
 
-	// _ = os.Remove(indexHTML)
-
-	if _, err = shioutil.CopyFile(indexTPL, indexHTML); err != nil {
+	tplData, err := ioutil.ReadFile(indexTPL)
+	if err != nil {
 		logger.Println(err)
 		return err
 	}
+	tpl := string(tplData)
+	html := strings.Replace(tpl, "${domain}", opts.Domain, -1)
+	html = strings.Replace(html, "${port}", fmt.Sprintf("%d", opts.Port), -1)
+	return ioutil.WriteFile(indexHTML, []byte(html), 0666)
+
+	// _ = os.Remove(indexHTML)
+
+	// if _, err = shioutil.CopyFile(indexTPL, indexHTML); err != nil {
+	// 	logger.Println(err)
+	// 	return err
+	// }
 
 	// f, err := os.OpenFile(indexHTML, os.O_RDWR, 0)
 	// if err != nil {
@@ -112,8 +123,8 @@ func genIndexHTML(opts Options, logger *log.Logger) (err error) {
 	// }
 	// defer f.Close()
 
-	return shioutil.ReplaceFileContent(indexHTML, map[string]string{
-		"${domain}": opts.Domain,
-		"${port}":   fmt.Sprintf("%d", opts.Port),
-	})
+	// return shioutil.ReplaceFileContent(indexHTML, map[string]string{
+	// 	"${domain}": opts.Domain,
+	// 	"${port}":   fmt.Sprintf("%d", opts.Port),
+	// })
 }

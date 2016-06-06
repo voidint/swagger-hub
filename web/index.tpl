@@ -36,7 +36,6 @@
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
-        //url = "http://petstore.swagger.io/v2/swagger.json";
         url = "http://${domain}:${port}/api/cfg/swagger_v2.yaml";
       }
 
