@@ -38,6 +38,7 @@ Usage of doc-server:
 
 ## DIY
 启动服务后并通过浏览器查看，可以发现默认是加载`web/api/cfg/swagger_v2.yaml`这个swagger文档。当然可以选择在这个文档中追加内容，但是更加合理的选择是按照自己的实际需求来安排具体放在哪个文档。那么，如何自定义默认加载哪个swagger文档呢？
+
 1. 找到`web/index.tpl`模板文件。
 1. 找到模板文件中的内容`url = "http://${domain}:${port}/api/cfg/swagger_v2.yaml";`
 1. 自定义默认加载的swagger文档，将其改为`url = "http://${domain}:${port}/api/swagger.yaml";`。注意：只能更改`http://${domain}:${port}/api/`之后的内容，`api`对应的就是文件系统中`web/api`目录，换句话说，这里提供的是对本地文件系统`web/api`目录的映射功能。
