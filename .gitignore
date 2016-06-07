@@ -3,6 +3,7 @@
 *.a
 *.so
 *.db
+index.html
 
 # Folders
 _obj
@@ -11,6 +12,7 @@ bin
 pkg
 temp
 .vscode
+api/*
 
 # Architecture specific extensions/prefixes
 *.[568vq]
