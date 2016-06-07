@@ -1,4 +1,4 @@
-#swagger-hu
+#swagger-hub
 为[swagger-ui](https://github.com/swagger-api/swagger-ui)提供动态渲染本地swagger文档服务。
 
 # 安装
