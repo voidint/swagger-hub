@@ -3,7 +3,9 @@
 *.a
 *.so
 *.db
-index.html
+*.log
+web/index.html
+
 
 # Folders
 _obj
