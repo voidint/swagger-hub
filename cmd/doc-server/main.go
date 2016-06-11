@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"flag"
 	"fmt"
@@ -11,6 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	shfilepath "github.com/voidint/swagger-hub/filepath"
 	shiosutil "github.com/voidint/swagger-hub/osutil"
 )
 
@@ -95,7 +97,7 @@ func initLog(file string) (logger *log.Logger, err error) {
 }
 
 // 在指定目录下通过模板生成index.html文件
-func genIndexHTML(opts Options, logger *log.Logger) (err error) {
+func genIndexHTML(opts Options, logger *log.Logger) (err error) { // TODO 通过golang的template生成HTML
 	indexHTML := filepath.Join(opts.Dir, "index.html")
 	indexTPL := filepath.Join(opts.Dir, "index.tpl")
 
@@ -104,8 +106,32 @@ func genIndexHTML(opts Options, logger *log.Logger) (err error) {
 		logger.Println(err)
 		return err
 	}
+
+	apiBasePath := filepath.Join(opts.Dir, "api")
+	paths, err := shfilepath.ScanSwaggerDocs(apiBasePath)
+	if err != nil {
+		logger.Println(err)
+		return err
+	}
+
 	html := string(tplData)
 	html = strings.Replace(html, "${domain}", opts.Domain, -1)
 	html = strings.Replace(html, "${port}", fmt.Sprintf("%d", opts.Port), -1)
+	html = strings.Replace(html, "${baseURLs}", genSelectHTML(opts, logger, paths), -1)
 	return ioutil.WriteFile(indexHTML, []byte(html), 0666)
+}
+
+func genSelectHTML(opts Options, logger *log.Logger, paths []string) string {
+	apiBasePath := filepath.Join(opts.Dir, "api")
+	baseURI := fmt.Sprintf("http://%s:%d/api", opts.Domain, opts.Port)
+
+	var buf bytes.Buffer
+	buf.WriteString(`<select id="input_baseUrl" name="baseUrl">\n`)
+	for _, path := range paths {
+		val := strings.Replace(path, apiBasePath, baseURI, -1)
+		// <option value="http://localhost:8090/api/swagger.yaml">swagger.yaml</option>
+		buf.WriteString(`\n\t<option value="` + val + `">` + val + `</option>`)
+	}
+	buf.WriteString(`\n</select>`)
+	return buf.String()
 }
