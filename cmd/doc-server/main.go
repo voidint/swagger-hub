@@ -114,9 +114,11 @@ func genIndexHTML(opts Options, logger *log.Logger) (err error) { // TODO 通过
 		return err
 	}
 
+	logger.Printf("Find docs: %v\n", paths)
+
 	html := string(tplData)
-	html = strings.Replace(html, "${domain}", opts.Domain, -1)
-	html = strings.Replace(html, "${port}", fmt.Sprintf("%d", opts.Port), -1)
+	// html = strings.Replace(html, "${domain}", opts.Domain, -1)
+	// html = strings.Replace(html, "${port}", fmt.Sprintf("%d", opts.Port), -1)
 	html = strings.Replace(html, "${baseURLs}", genSelectHTML(opts, logger, paths), -1)
 	return ioutil.WriteFile(indexHTML, []byte(html), 0666)
 }

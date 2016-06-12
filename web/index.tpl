@@ -32,19 +32,21 @@
 
   <script type="text/javascript">
     $(function () {
+      /*
       var url = window.location.search.match(/url=([^&]+)/);
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
         url = "http://${domain}:${port}/api/cfg/swagger_v2.yaml";
       }
+      */
 
       // Pre load translate...
       if(window.SwaggerTranslator) {
         window.SwaggerTranslator.translate();
       }
       window.swaggerUi = new SwaggerUi({
-        url: url,
+        // url: url,
         dom_id: "swagger-ui-container",
         supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
         onComplete: function(swaggerApi, swaggerUi){
@@ -101,7 +103,8 @@
         $('#input_apiKey').val(apiKey);
       */
 
-      window.swaggerUi.load();
+      // window.swaggerUi.load();
+      $('#explore').click();
 
       function log() {
         if ('console' in window) {
