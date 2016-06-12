@@ -90,6 +90,10 @@
       }
 
       $('#input_apiKey').change(addApiKeyAuthorization);
+      
+      $('#input_baseUrl').change(function(){
+        $('#explore').click();
+      });
 
       // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
       /*

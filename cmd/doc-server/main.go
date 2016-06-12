@@ -126,12 +126,11 @@ func genSelectHTML(opts Options, logger *log.Logger, paths []string) string {
 	baseURI := fmt.Sprintf("http://%s:%d/api", opts.Domain, opts.Port)
 
 	var buf bytes.Buffer
-	buf.WriteString(`<select id="input_baseUrl" name="baseUrl">\n`)
+	buf.WriteString(`<select id="input_baseUrl" name="baseUrl">`)
 	for _, path := range paths {
 		val := strings.Replace(path, apiBasePath, baseURI, -1)
-		// <option value="http://localhost:8090/api/swagger.yaml">swagger.yaml</option>
-		buf.WriteString(`\n\t<option value="` + val + `">` + val + `</option>`)
+		buf.WriteString(fmt.Sprintf(`<option value="%s">%s</option>`, val, val))
 	}
-	buf.WriteString(`\n</select>`)
+	buf.WriteString(`</select>`)
 	return buf.String()
 }
