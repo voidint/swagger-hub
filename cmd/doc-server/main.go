@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/howeyc/fsnotify"
+	"github.com/fsnotify/fsnotify"
 	shfilepath "github.com/voidint/swagger-hub/filepath"
 	shos "github.com/voidint/swagger-hub/os"
 )
@@ -83,18 +83,21 @@ func Run(opts Options, logger *log.Logger) (err error) {
 	}
 
 	done := make(chan struct{})
+
+	// 监视API文档目录，若发生变动，则立即更新index.html
+	apiBasePath := filepath.Join(opts.Dir, "api")
+	go shfilepath.Watch(logger, done, apiBasePath, func(event fsnotify.Event) {
+		if event.Op == fsnotify.Create ||
+			event.Op == fsnotify.Remove ||
+			event.Op == fsnotify.Rename {
+			genIndexHTML(opts, logger)
+		}
+	})
+
 	defer func() {
 		logger.Println("write data to done channel")
 		done <- struct{}{}
 	}()
-
-	// 监视API文档目录，若发生变动，则立即更新index.html
-	apiBasePath := filepath.Join(opts.Dir, "api")
-	go shfilepath.Watch(logger, done, apiBasePath, func(event *fsnotify.FileEvent) {
-		if event.IsCreate() || event.IsDelete() || event.IsRename() {
-			genIndexHTML(opts, logger)
-		}
-	})
 
 	logger.Printf("Start doc service(port=%d, dir=%s, log=%s)\n", opts.Port, opts.Dir, opts.LogFile)
 

@@ -3,16 +3,16 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "LtBBfn+Uw7/gaB2tVsrLRBTprdo=",
+			"path": "github.com/fsnotify/fsnotify",
+			"revision": "30411dbcefb7a1da7e84f75530ad3abe4011b4f8",
+			"revisionTime": "2016-04-12T13:37:56Z"
+		},
+		{
 			"checksumSHA1": "P3zGmsNjW8m15a+nks4FdVpFKwE=",
 			"path": "github.com/gopherjs/gopherjs/js",
 			"revision": "244fe9679be7b935139f27fca1c190b7c3ee28fa",
 			"revisionTime": "2016-06-06T07:07:28Z"
-		},
-		{
-			"checksumSHA1": "ZxzYc1JwJ3U6kZbw/KGuPko5lSY=",
-			"path": "github.com/howeyc/fsnotify",
-			"revision": "f0c08ee9c60704c1879025f2ae0ff3e000082c13",
-			"revisionTime": "2015-10-03T19:46:02Z"
 		},
 		{
 			"checksumSHA1": "tewA7jXVGCw1zb5mA0BDecWi4iQ=",
@@ -61,6 +61,12 @@
 			"path": "github.com/smartystreets/goconvey/web/server/watch",
 			"revision": "c53abc99456fa3402dd33c15ee51c3e545e04a3f",
 			"revisionTime": "2016-05-23T15:31:47Z"
+		},
+		{
+			"checksumSHA1": "+ywZWOh4ZI2zDXWb6nIquOnKlIM=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "7f918dd405547ecb864d14a8ecbbfe205b5f930f",
+			"revisionTime": "2016-06-02T08:11:10Z"
 		}
 	],
 	"rootPath": "github.com/voidint/swagger-hub"
