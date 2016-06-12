@@ -87,6 +87,20 @@ func Run(opts Options, logger *log.Logger) (err error) {
 	// 监视API文档目录，若发生变动，则立即更新index.html
 	apiBasePath := filepath.Join(opts.Dir, "api")
 	go shfilepath.Watch(logger, done, apiBasePath, func(event fsnotify.Event) {
+		var opDesc string
+		switch event.Op {
+		case fsnotify.Chmod:
+			opDesc = "Chmod"
+		case fsnotify.Create:
+			opDesc = "Create"
+		case fsnotify.Remove:
+			opDesc = "Remove"
+		case fsnotify.Rename:
+			opDesc = "Rename"
+		case fsnotify.Write:
+			opDesc = "Write"
+		}
+		logger.Printf("%s --> %s\n", event.Name, opDesc)
 		if event.Op == fsnotify.Create ||
 			event.Op == fsnotify.Remove ||
 			event.Op == fsnotify.Rename {
