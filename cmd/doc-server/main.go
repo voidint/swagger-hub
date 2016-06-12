@@ -12,8 +12,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/howeyc/fsnotify"
 	shfilepath "github.com/voidint/swagger-hub/filepath"
-	shiosutil "github.com/voidint/swagger-hub/osutil"
+	shos "github.com/voidint/swagger-hub/os"
 )
 
 const (
@@ -41,7 +42,7 @@ func (opts *Options) Validate() error {
 		return ErrPort
 	}
 
-	if !shiosutil.DirExisted(opts.Dir) {
+	if !shos.DirExisted(opts.Dir) {
 		return ErrDir
 	}
 	return nil
@@ -75,10 +76,26 @@ func main() {
 
 // Run 运行服务
 func Run(opts Options, logger *log.Logger) (err error) {
+	// 扫描文档目录及其子目录中所有swagger文档并生成index.html内容
 	if err = genIndexHTML(opts, logger); err != nil {
 		logger.Println(err)
 		return err
 	}
+
+	done := make(chan struct{})
+	defer func() {
+		logger.Println("write data to done channel")
+		done <- struct{}{}
+	}()
+
+	// 监视API文档目录，若发生变动，则立即更新index.html
+	apiBasePath := filepath.Join(opts.Dir, "api")
+	go shfilepath.Watch(logger, done, apiBasePath, func(event *fsnotify.FileEvent) {
+		if event.IsCreate() || event.IsDelete() || event.IsRename() {
+			genIndexHTML(opts, logger)
+		}
+	})
+
 	logger.Printf("Start doc service(port=%d, dir=%s, log=%s)\n", opts.Port, opts.Dir, opts.LogFile)
 
 	http.Handle("/", http.FileServer(http.Dir(opts.Dir)))

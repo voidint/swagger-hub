@@ -1,4 +1,4 @@
-package ioutil
+package io
 
 import (
 	"bufio"
@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/voidint/swagger-hub/strutil"
+	"github.com/voidint/swagger-hub/str"
 )
 
 // ReplaceFileContent 替换文件中的内容
@@ -33,7 +33,7 @@ func ReplaceFileContent(dstFile string, pairs map[string]string) (err error) {
 			return err
 		}
 
-		if _, err = buf.WriteString(strutil.ReplaceStr(line, pairs)); err != nil {
+		if _, err = buf.WriteString(str.ReplaceStr(line, pairs)); err != nil {
 			return nil
 		}
 	}
