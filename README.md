@@ -35,3 +35,11 @@ Usage of doc-server:
 1. 将文档（`YAML`格式或者`JSON`格式）放入`dir`参数所指向的名为`web`目录下的`api`目录中。
 1. 启动服务`doc-server --dir $GOPATH/src/github.com/voidint/swagger-hub/web --domain localhost --log /tmp/doc-server.log --port 8090`。
 1. 通过浏览器访问`http://localhost:8090`。
+
+
+# TODO
+- [ ] 自定义`api`目录。
+- [x] 监控`api`目录下文件变化(新增、删除、重命名)，一旦变化发生，立即更新静态HTML页面内容。
+- [ ] 服务运行过程中，监控`api`目录下任意子目录以及其下文件的变动，一旦变化发生，立即更新静态HTML页面内容。
+- [ ] 使用`golang`原生的`template`机制替换当前`strings.Replace()`机制生成静态html页面。
+- [ ] 增加`version`子命令用于输出版本号。
