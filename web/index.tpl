@@ -32,15 +32,6 @@
 
   <script type="text/javascript">
     $(function () {
-      /*
-      var url = window.location.search.match(/url=([^&]+)/);
-      if (url && url.length > 1) {
-        url = decodeURIComponent(url[1]);
-      } else {
-        url = "http://${domain}:${port}/api/cfg/swagger_v2.yaml";
-      }
-      */
-
       // Pre load translate...
       if(window.SwaggerTranslator) {
         window.SwaggerTranslator.translate();
@@ -121,7 +112,6 @@
     <a id="logo" href="http://swagger.io">swagger</a>
     <form id='api_selector'>
       <div class='input'>
-        <!--<input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/>-->
         ${baseURLs}
       </div>
       <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
