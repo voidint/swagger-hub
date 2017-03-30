@@ -9,23 +9,16 @@ import (
 	"github.com/voidint/swagger-hub/build"
 )
 
-var logger *log.Logger
+var logger = log.New(os.Stdout, "", log.LstdFlags)
 
 // Run run cli
 func Run() {
 	app := cli.NewApp()
 	app.Name = path.Base(os.Args[0])
 	app.Usage = "Open API documents server"
-	app.Version = build.Version("1.0.0")
+	app.Version = build.Version("1.0.1")
 	app.Authors = []cli.Author{
 		{Name: "voidint", Email: "voidint@126.com"},
-	}
-
-	// app.Flags = []cli.Flag{flLog}
-
-	app.Before = func(ctx *cli.Context) error {
-		logger = log.New(os.Stdout, "", log.LstdFlags)
-		return nil
 	}
 
 	app.Commands = commands
