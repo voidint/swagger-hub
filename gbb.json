@@ -1,0 +1,15 @@
+{
+    "version": "0.3.0",
+    "tool": "go install",
+    "package": "github.com/voidint/swagger-hub/build",
+    "variables": [
+        {
+            "variable": "Date",
+            "value": "{{.Date}}"
+        },
+        {
+            "variable": "Commit",
+            "value": "{{.GitCommit}}"
+        }
+    ]
+}
