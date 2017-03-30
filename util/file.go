@@ -1,13 +1,33 @@
-package io
+package util
 
 import (
 	"bufio"
 	"bytes"
 	"io"
 	"os"
-
-	"github.com/voidint/swagger-hub/str"
 )
+
+// DirExisted 返回指定路径的目录是否存在的布尔值
+func DirExisted(dir string) bool {
+	fi, err := os.Stat(dir)
+	return err == nil && fi.IsDir()
+}
+
+// CopyFile 将原文件逐字节拷贝至目标文件
+func CopyFile(srcFile, destFile string) (written int64, err error) {
+	src, err := os.Open(srcFile)
+	if err != nil {
+		return 0, err
+	}
+	defer src.Close()
+
+	dest, err := os.Create(destFile)
+	if err != nil {
+		return 0, err
+	}
+	defer dest.Close()
+	return io.Copy(dest, src)
+}
 
 // ReplaceFileContent 替换文件中的内容
 func ReplaceFileContent(dstFile string, pairs map[string]string) (err error) {
@@ -33,7 +53,7 @@ func ReplaceFileContent(dstFile string, pairs map[string]string) (err error) {
 			return err
 		}
 
-		if _, err = buf.WriteString(str.ReplaceStr(line, pairs)); err != nil {
+		if _, err = buf.WriteString(ReplaceStr(line, pairs)); err != nil {
 			return nil
 		}
 	}

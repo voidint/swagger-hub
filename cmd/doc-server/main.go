@@ -13,8 +13,7 @@ import (
 	"strings"
 
 	"github.com/fsnotify/fsnotify"
-	shfilepath "github.com/voidint/swagger-hub/filepath"
-	shos "github.com/voidint/swagger-hub/os"
+	"github.com/voidint/swagger-hub/util"
 )
 
 const (
@@ -42,7 +41,7 @@ func (opts *Options) Validate() error {
 		return ErrPort
 	}
 
-	if !shos.DirExisted(opts.Dir) {
+	if !util.DirExisted(opts.Dir) {
 		return ErrDir
 	}
 	return nil
@@ -50,7 +49,7 @@ func (opts *Options) Validate() error {
 
 func main() {
 	var opts Options
-	flag.UintVar(&opts.Port, "port", 80, "服务端口号")
+	flag.UintVar(&opts.Port, "port", 0, "服务端口号")
 	flag.StringVar(&opts.Domain, "domain", "apihub.idcos.net", "HTTP服务域名")
 	flag.StringVar(&opts.Dir, "dir", "", "需要提供文件服务的目录路径")
 	flag.StringVar(&opts.LogFile, "log", "doc-server.log", "日志打印全路径(包含日志文件名称)")
@@ -86,7 +85,7 @@ func Run(opts Options, logger *log.Logger) (err error) {
 
 	// 监视API文档目录，若发生变动，则立即更新index.html
 	apiBasePath := filepath.Join(opts.Dir, "api")
-	go shfilepath.Watch(logger, done, apiBasePath, func(event fsnotify.Event) {
+	go util.Watch(logger, done, apiBasePath, func(event fsnotify.Event) {
 		var opDesc string
 		switch event.Op {
 		case fsnotify.Chmod:
@@ -142,7 +141,7 @@ func genIndexHTML(opts Options, logger *log.Logger) (err error) { // TODO 通过
 	}
 
 	apiBasePath := filepath.Join(opts.Dir, "api")
-	paths, err := shfilepath.ScanSwaggerDocs(apiBasePath)
+	paths, err := util.ScanSwaggerDocs(apiBasePath)
 	if err != nil {
 		logger.Println(err)
 		return err
