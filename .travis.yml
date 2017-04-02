@@ -7,10 +7,11 @@ go:
 
 before_install:
     - go get github.com/mattn/goveralls
+    - go get github.com/voidint/gbb
 
 script:
-    - GOOS=darwin go build
-    - GOOS=windows go build
-    - GOOS=linux go build
+    - GOOS=darwin gbb --debug
+    - GOOS=windows gbb --debug
+    - GOOS=linux gbb --debug
     - $HOME/gopath/bin/goveralls -service=travis-ci
     
